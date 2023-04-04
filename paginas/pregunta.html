@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar pregunta y jugador al azar</title>
+    <link rel="stylesheet" href="estilos.css">
+    </style>
+  </head>
+  <body>
+    <h1>Presiona el botón para seleccionar una pregunta o un jugador al azar:</h1>
+    <button onclick="seleccionarPregunta()">Seleccionar pregunta</button>
+    <button onclick="seleccionarJugador()">Seleccionar jugador</button>
+    <div id="pregunta-elegida"></div>
+    <div id="avatar-elegido"></div>
+    <div id="nombre-avatar"></div>
+    
+    <h2>Selecciona una pregunta o un jugador manualmente:</h2>
+    <select id="seleccionar-pregunta" onchange="mostrarPreguntaSeleccionada()">
+      <option value="">Selecciona una pregunta</option>
+    </select>
+    <select id="seleccionar-jugador" onchange="mostrarJugadorSeleccionado()">
+      <option value="">Selecciona un jugador</option>
+    </select>
+    <script>
+      var preguntas = ["3a + 7 - 2a = 19 - 4a", "5b - 8 + 4b = 20 + 2b", "2x + 9 - 3x = 21 - x", "7c - 5 + 6c = 25 + 8c", "4a + 11 - a = 23 - 5a", "2b + 4 - 5b = -10 + b", "3m - 7 + 4m = -15 - 2m", "5x + 8 - x = -12 + 3x", "7a - 4 + 6a = -20 - 8a", "4m + 9 - 2m = -15 - m", "3m - 5 + 4m = -13 - 2m", "2m + 7 - m = -11 + 3m", "5a - 6 + 4a = -18 - 2a", "7b + 8 - 6b = -14 + 4b", "3c + 9 - 4c = -17 - c"];
+
+      var preguntasManual = [...preguntas]; // Crear una copia de las preguntas para la selección manual
+
+      var avatares = [
+        {nombre: "Robot Diego", rutaImagen: 'imagenes/Diego.png'},
+        {nombre: "Robot Emma", rutaImagen: 'imagenes/Emma.png'},
+        {nombre: "Robot Hector", rutaImagen: 'imagenes/Hector.png'},
+        {nombre: "Robot Hugo", rutaImagen: 'imagenes/Hugo.png'},
+        {nombre: "Robot Joel", rutaImagen: 'imagenes/Joel.png'},
+        {nombre: "Robot Lucas", rutaImagen: 'imagenes/Lucas.png'},
+        {nombre: "Robot Samuel", rutaImagen: 'imagenes/Samuel.png'},
+        {nombre: "Robot Sonia", rutaImagen: 'imagenes/Sonia.png'},
+        {nombre: "Robot Yago", rutaImagen: 'imagenes/Yago.png'},
+        {nombre: "Robot Zhijian", rutaImagen: 'imagenes/Zhijian.png'}
+      ];
+
+      var avataresManual = [...avatares];
+
+      function seleccionarPregunta() {
+        if (preguntas.length === 0) {
+          alert("No hay más preguntas disponibles");
+          return;
+        }
+        
+        var indexSeleccionado = Math.floor(Math.random() * preguntas.length);
+        var preguntaSeleccionada = preguntas[indexSeleccionado];
+        // Eliminar la pregunta seleccionada de la lista
+        preguntas.splice(indexSeleccionado, 1);
+
+        seleccionarElemento(preguntas, "pregunta-elegida", preguntaSeleccionada);
+      }
+
+      function seleccionarJugador() {
+        if (avatares.length === 0) {
+          alert("No hay más jugadores disponibles");
+          return;
+        }
+        
+        var indexSeleccionado = Math.floor(Math.random() * avatares.length);
+        var avatarSeleccionado = avatares[indexSeleccionado];
+
+        // Eliminar el jugador seleccionado de la lista
+        avatares.splice(indexSeleccionado, 1);
+
+        seleccionarElemento(avatares, "avatar-elegido", avatarSeleccionado, "nombre-avatar", avatarSeleccionado.nombre);
+      }
+
+      // Resto del código...
+
+
+function seleccionarElemento(lista, idElemento, elementoSeleccionado, idNombre, nombreSeleccionado) {
+  var tiempoTotal = 8000;
+  var tiempoEntreCambios = 300;
+  var tiempoActual = 0;
+  var intervalo = setInterval(function() {
+    var elementoAleatorio = lista[Math.floor(Math.random() * lista.length)];
+    if (idNombre) {
+      document.getElementById(idElemento).innerHTML = '<img src="' + elementoAleatorio.rutaImagen + '" alt="' + elementoAleatorio.nombre + '" width="100" height="100">';
+      document.getElementById(idNombre).innerHTML = elementoAleatorio.nombre;
+    } else {
+      document.getElementById(idElemento).innerHTML = '<span style="font-size: 5em;">' + elementoAleatorio + '</span>';
+    }
+
+    tiempoActual += tiempoEntreCambios;
+
+    // Cuando se llega al tiempo total, se destaca el elemento seleccionado
+    if (tiempoActual >= tiempoTotal) {
+      clearInterval(intervalo);
+      if (idNombre) {
+        document.getElementById(idElemento).innerHTML = '<img src="' + elementoSeleccionado.rutaImagen + '" alt="' + elementoSeleccionado.nombre + '" width="300" height="300">'; // Aumenta el tamaño de la imagen aquí
+        document.getElementById(idNombre).innerHTML = nombreSeleccionado.bold();
+      } else {
+        document.getElementById(idElemento).innerHTML = '<span style="font-size: 5em;">' + elementoSeleccionado.bold() + '</span>';
+      }
+    }
+  }, tiempoEntreCambios);
+}
+function llenarSelect() {
+        var selectPregunta = document.getElementById("seleccionar-pregunta");
+        var selectJugador = document.getElementById("seleccionar-jugador");
+
+        preguntas.forEach(function (pregunta, index) {
+          var option = document.createElement("option");
+          option.value = index;
+          option.text = pregunta;
+          selectPregunta.add(option);
+        });
+
+        avatares.forEach(function (avatar, index) {
+          var option = document.createElement("option");
+          option.value = index;
+          option.text = avatar.nombre;
+          selectJugador.add(option);
+        });
+      }
+
+      // Mostrar la pregunta seleccionada manualmente
+      function mostrarPreguntaSeleccionada() {
+        var selectPregunta = document.getElementById("seleccionar-pregunta");
+        var indexSeleccionado = selectPregunta.value;
+        if (indexSeleccionado !== "") {
+          seleccionarElemento(preguntasManual, "pregunta-elegida", preguntasManual[indexSeleccionado]);
+        }
+      }
+
+      // Mostrar el jugador seleccionado manualmente
+      function mostrarJugadorSeleccionado() {
+        var selectJugador = document.getElementById("seleccionar-jugador");
+        var indexSeleccionado = selectJugador.value;
+        if (indexSeleccionado !== "") {
+          seleccionarElemento(avataresManual, "avatar-elegido", avataresManual[indexSeleccionado], "nombre-avatar", avataresManual[indexSeleccionado].nombre);
+        }
+      }
+
+      // Llamar a la función para llenar el menú desplegable
+      llenarSelect();
+
+
+</script>
+</body>
+</html>
