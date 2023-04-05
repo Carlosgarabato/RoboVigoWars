@@ -11,6 +11,7 @@
     <h1>Presiona el botón para seleccionar una pregunta o un jugador al azar:</h1>
     <button onclick="seleccionarPregunta()">Seleccionar pregunta</button>
     <button onclick="seleccionarJugador()">Seleccionar jugador</button>
+   
     <div id="pregunta-elegida"></div>
     <div id="avatar-elegido"></div>
     <div id="nombre-avatar"></div>
@@ -22,6 +23,8 @@
     <select id="seleccionar-jugador" onchange="mostrarJugadorSeleccionado()">
       <option value="">Selecciona un jugador</option>
     </select>
+    <h2>Temporizador:</h2>
+    <button id="botonB">30s</button>
     <script>
       var preguntas = ["3a + 7 - 2a = 19 - 4a", "5b - 8 + 4b = 20 + 2b", "2x + 9 - 3x = 21 - x", "7c - 5 + 6c = 25 + 8c", "4a + 11 - a = 23 - 5a", "2b + 4 - 5b = -10 + b", "3m - 7 + 4m = -15 - 2m", "5x + 8 - x = -12 + 3x", "7a - 4 + 6a = -20 - 8a", "4m + 9 - 2m = -15 - m", "3m - 5 + 4m = -13 - 2m", "2m + 7 - m = -11 + 3m", "5a - 6 + 4a = -18 - 2a", "7b + 8 - 6b = -14 + 4b", "3c + 9 - 4c = -17 - c"];
 
@@ -137,10 +140,13 @@ function llenarSelect() {
           seleccionarElemento(avataresManual, "avatar-elegido", avataresManual[indexSeleccionado], "nombre-avatar", avataresManual[indexSeleccionado].nombre);
         }
       }
-
+      document.getElementById("botonB").addEventListener("click", function() {
+    window.open("temporizador.html", "_blank", "width=800, height=600");
+  });
       // Llamar a la función para llenar el menú desplegable
       llenarSelect();
 
+     
 
 </script>
 </body>
